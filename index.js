@@ -95,6 +95,19 @@ client.connect(err => {
                 res.send(document[0])
             })
     });
+
+    app.get('/managePackage', (req, res) => {
+        const userEmail = req.query.email
+        packagesCollection.find({email: userEmail})
+            .toArray((error, document) => {
+                res.send(document)
+            })
+    })
+    app.delete('/package/:id', (req, res) => {
+        const id = ObjectID(req.params.id)
+        packagesCollection.deleteOne({ _id: id })
+            .then(result => res.send(result.deletedCount > 0))
+    });
 });
 
 app.get('/', (req, res) => {
