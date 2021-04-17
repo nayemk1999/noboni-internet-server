@@ -98,24 +98,24 @@ client.connect(err => {
 
     app.get('/managePackage', (req, res) => {
         const userEmail = req.query.email
-        packagesCollection.find({email: userEmail})
+        packagesCollection.find({ email: userEmail })
             .toArray((error, document) => {
                 res.send(document)
             })
     })
 
-    app.patch('/package/:id', (req, res) => {
+    app.patch('/updated/:id', (req, res) => {
         const id = ObjectID(req.params.id)
-        packagesCollection.updateOne(
-            { _id: id },
-            { $set: { status: req.body.status },
-              $currentDate: { lastModified: true } })
-          .then((result) => {
-            console.log('Updated....');
-          })    
+        ordersCollection.updateOne({ _id: id },
+            {
+                $set: { status: req.body.status }
+            })
+            .then((error, result) => {
+                res.send(result.matchedCount > 0);
+            })
     });
 
-    app.delete('/package/:id', (req, res) => {
+    app.delete('/deleted/:id', (req, res) => {
         const id = ObjectID(req.params.id)
         packagesCollection.deleteOne({ _id: id })
             .then(result => res.send(result.deletedCount > 0))
