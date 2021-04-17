@@ -103,6 +103,18 @@ client.connect(err => {
                 res.send(document)
             })
     })
+
+    app.patch('/package/:id', (req, res) => {
+        const id = ObjectID(req.params.id)
+        packagesCollection.updateOne(
+            { _id: id },
+            { $set: { status: req.body.status },
+              $currentDate: { lastModified: true } })
+          .then((result) => {
+            console.log('Updated....');
+          })    
+    });
+
     app.delete('/package/:id', (req, res) => {
         const id = ObjectID(req.params.id)
         packagesCollection.deleteOne({ _id: id })
