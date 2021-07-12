@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 require('dotenv').config()
-const port = 3001
+const port = 3003
 
 const app = express()
 app.use(bodyParser.json())
@@ -96,18 +96,18 @@ client.connect(err => {
             })
     });
 
-    app.get('/managePackage', (req, res) => {
-        const userEmail = req.query.email
-        packagesCollection.find({ email: userEmail })
-            .toArray((error, document) => {
-                res.send(document)
-            })
-    })
+    // app.get('/managePackage', (req, res) => {
+    //     const userEmail = req.query.email
+    //     packagesCollection.find({ email: userEmail })
+    //         .toArray((error, document) => {
+    //             res.send(document)
+    //         })
+    // })
+
 
     app.patch('/updated/:id', (req, res) => {
         const id = ObjectID(req.params.id)
-        ordersCollection.updateOne({ _id: id },
-            {
+        ordersCollection.updateOne({ _id: id }, {
                 $set: { status: req.body.status }
             })
             .then((error, result) => {
