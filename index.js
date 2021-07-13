@@ -105,15 +105,24 @@ client.connect(err => {
     // })
 
 
-    app.patch('/updated/:id', (req, res) => {
-        const id = ObjectID(req.params.id)
-        ordersCollection.updateOne({ _id: id }, {
-                $set: { status: req.body.status }
-            })
-            .then((error, result) => {
-                res.send(result.matchedCount > 0);
-            })
-    });
+    // app.patch('/updated/:id', (req, res) => {
+    //     const id = ObjectID(req.params.id)
+    //     ordersCollection.updateOne({ _id: id }, {
+    //             $set: { status: req.body.status }
+    //         })
+    //         .then((error, result) => {
+    //             res.send(result.matchedCount > 0);
+    //         })
+    // });
+    app.patch('/update-order-status', (req, res) => {
+        const { id, status } = req.body;
+        ordersCollection.findOneAndUpdate(
+            { _id: ObjectId(id) },
+            {
+                $set: { status },
+            }
+        ).then(result => res.send(result.lastErrorObject.updatedExisting))
+    })
 
     app.delete('/deleted/:id', (req, res) => {
         const id = ObjectID(req.params.id)
