@@ -117,7 +117,7 @@ client.connect(err => {
     app.patch('/update-order-status', (req, res) => {
         const { id, status } = req.body;
         ordersCollection.findOneAndUpdate(
-            { _id: ObjectId(id) },
+            { _id: ObjectID(id) },
             {
                 $set: { status },
             }
